@@ -26,14 +26,14 @@ use League\CommonMark\Extension\TaskList\TaskListExtension;
 class Helpers {
   public static function markdown($string, array $options = [])
   {
-    $environment = new Environment();
+    $environment = new Environment($options);
     $environment->addExtension(new CommonMarkCoreExtension());
     $environment->addExtension(new AutolinkExtension());
     $environment->addExtension(new StrikethroughExtension());
     $environment->addExtension(new TableExtension());
     $environment->addExtension(new TaskListExtension());
     $converter = new MarkdownConverter($environment);
-    return $converter->convert($string, $options);
+    return $converter->convert($string);
   }
 }
 // Basic uses
@@ -41,3 +41,18 @@ echo Helpers::markdown('**Hello World!**');
 // <p><strong>Hello World!</strong></p>
 
 ```
+
+As I am using laravel framework, I can achieve by following code as well 
+
+```php
+public static function  markdown($string)
+{
+  $config = [
+    'disallowed_raw_html' => [
+        'disallowed_tags' => ['title', 'textarea', 'xmp', 'noembed', 'noframes', 'script', 'plaintext'],
+    ],
+  ];
+  return Str::markdown($string, $config);
+}
+```
+
